@@ -1,0 +1,6 @@
+[package]
+name = "rust_doku"
+version = "0.1.0"
+authors = ["David Welman <dwelman2704@gmail.com>"]
+
+[dependencies]
