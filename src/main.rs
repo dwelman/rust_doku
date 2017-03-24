@@ -1,6 +1,7 @@
 use std::env;
 use std::str;
 use std::process;
+mod puzzle_logic;
 
 fn print_usage_error(code: u32)
 {
@@ -66,4 +67,5 @@ fn main()
         print_usage_error(1);
     }
     let mut puzzle = parse_input(args);
+    puzzle_logic::solve_puzzle(&mut puzzle);
 }
