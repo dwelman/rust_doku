@@ -6,62 +6,69 @@ pub fn solve_puzzle(puzzle: &mut [[u32; 9]; 9])
 	{
 		error::print_usage_error(4);
 	}
-	if puzzle_loop(puzzle, 0, 0) == true
+	puzzle_loop(puzzle, 0, 0);
+	if validate_puzzle(puzzle) == true
 	{
 		print_puzzle(puzzle);
-		if validate_puzzle(puzzle) == true
-		{
-			println!("YOU ARE A GENIUS");
-		}
+		println!("Puzzle complete!");
+	}
+	else
+	{
+		println!("Puzzle cannot be solved");
 	}
 }
 
 //The recursive loop that solves the puzzle
 fn puzzle_loop(puzzle: &mut [[u32; 9]; 9], y: usize, x: usize) -> bool
 {
-	if (puzzle[y][x] != 0)
+	if y == 9
 	{
-		if y == 8 && x == 8
-		{
-			return true
-		}
-		//If the puzzle is at the edge move a row down
-		if x == 8 && y != 8
-		{
-			return puzzle_loop(puzzle, y + 1, 0)
-		}
-		else
-		{
-			return puzzle_loop(puzzle, y, x + 1)
-		}
+		return true
 	}
-	for n in 1..10
+	if puzzle[y][x] == 0
 	{
-		puzzle[y][x] = n;
-		if validate_specific_val(puzzle, y, x) == true
+		for n in 1..10
 		{
-			if y == 8 && x == 8
+			puzzle[y][x] = n;
+			if validate_specific_val(puzzle, y, x) == true
+			{
+				if x == 8
+				{
+					if puzzle_loop(puzzle, y + 1, 0) == true
+					{
+						return true
+					}
+				}
+				else
+				{
+					if puzzle_loop(puzzle, y, x + 1) == true
+					{
+						return true
+					}
+				}
+			}
+		}
+		puzzle[y][x] = 0;
+		return false
+	}
+	else
+	{
+		if x == 8
+		{
+			if puzzle_loop(puzzle, y + 1, 0) == true
 			{
 				return true
 			}
-			//If the puzzle is at the edge move a row down
-			if x == 8 && y != 8
+		}
+		else
+		{
+			if puzzle_loop(puzzle, y, x + 1) == true
 			{
-				if puzzle_loop(puzzle, y + 1, 0) == true
-				{
-					return true
-				}
-			}
-			else
-			{
-				if puzzle_loop(puzzle, y, x + 1) == true
-				{
-					return true
-				}
+				return true
 			}
 		}
 	}
-	false
+	return false
 }
 
 pub fn print_puzzle(puzzle: &[[u32; 9]; 9])
@@ -84,7 +91,7 @@ pub fn validate_puzzle(puzzle: &[[u32; 9]; 9]) -> bool
 		for x in 0..9
 		{
 			//Ignore empty blocks
-			if (puzzle[y][x] != 0)
+			if puzzle[y][x] != 0
 			{
 				if validate_specific_val(puzzle, y, x) == false
 				{
