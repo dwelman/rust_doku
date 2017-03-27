@@ -2,10 +2,6 @@ use error;
 
 pub fn solve_puzzle(puzzle: &mut [[u32; 9]; 9])
 {
-	if validate_puzzle(puzzle) == false
-	{
-		error::print_usage_error(4);
-	}
 	puzzle_loop(puzzle, 0, 0);
 	if validate_puzzle(puzzle) == true
 	{
@@ -90,13 +86,9 @@ pub fn validate_puzzle(puzzle: &[[u32; 9]; 9]) -> bool
 	{
 		for x in 0..9
 		{
-			//Ignore empty blocks
-			if puzzle[y][x] != 0
+			if validate_specific_val(puzzle, y, x) == false
 			{
-				if validate_specific_val(puzzle, y, x) == false
-				{
-					return false
-				}
+				return false
 			}
 		}
 	}
